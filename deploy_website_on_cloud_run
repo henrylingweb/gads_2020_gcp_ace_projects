@@ -1,0 +1,542 @@
+ $ gcloud config unset project
+student_01_78255bff3513@cloudshell:~$ gcloud config set project qwiklabs-gcp-01-0ae66cf33a6d
+Updated property [core/project].
+student_01_78255bff3513@cloudshell:~ (qwiklabs-gcp-01-0ae66cf33a6d)$ git clone https://github.com/googlecodelabs/monolith-to-microservices.git
+Cloning into 'monolith-to-microservices'...
+remote: Enumerating objects: 951, done.
+remote: Counting objects: 100% (951/951), done.
+remote: Compressing objects: 100% (535/535), done.
+remote: Total 951 (delta 410), reused 884 (delta 356), pack-reused 0
+Receiving objects: 100% (951/951), 2.53 MiB | 687.00 KiB/s, done.
+Resolving deltas: 100% (410/410), done.
+student_01_78255bff3513@cloudshell:~ (qwiklabs-gcp-01-0ae66cf33a6d)$ cd ~/monolith-to-microservices
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices (qwiklabs-gcp-01-0ae66cf33a6d)$ ./setup.sh
+Checking for required npm version...Completed.
+Installing monolith dependencies...Completed.
+Installing microservies dependencies...Completed.
+Installing React app dependencies...Completed.
+Building React app and placing into sub projects...Completed.
+
+Script completed successfully!
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices (qwiklabs-gcp-01-0ae66cf33a6d)$ cd ~/monolith-to-microservices/monolith
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ npm start
+
+> monolith@1.0.0 start /home/student_01_78255bff3513/monolith-to-microservices/monolith
+> node ./src/server.js
+
+Monolith listening on port 8080!
+gcloud services enable cloudbuild.googleapis.com
+^Cstudent_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud services enable cloudbuild.googleapis.com
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0.0 .
+Creating temporary tarball archive of 32 file(s) totalling 2.4 MiB before compression.
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-0ae66cf33a6d/builds/2f5a07c0-fa0f-402f-9bc8-2c6b82409448].
+Logs are available at [https://console.cloud.google.com/cloud-build/builds/2f5a07c0-fa0f-402f-9bc8-2c6b82409448?project=494414086591].
+---------------------------------------------------------------------------- REMOTE BUILD OUTPUT ----------------------------------------------------------------------------
+starting build "2f5a07c0-fa0f-402f-9bc8-2c6b82409448"
+
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705265.822185-7a6840d4835f41208aa4c3f1c521cab3.tgz#1600705267758548
+Copying gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705265.822185-7a6840d4835f41208aa4c3f1c521cab3.tgz#1600705267758548...
+/ [1 files][  1.4 MiB/  1.4 MiB]
+Operation completed over 1 objects/1.4 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/docker
+Sending build context to Docker daemon  2.558MB
+Step 1/7 : FROM node:10
+10: Pulling from library/node
+4f250268ed6a: Already exists
+1b49aa113642: Already exists
+c159512f4cc2: Already exists
+8439168fd8dc: Already exists
+55abbc6cc158: Already exists
+e5c5821cd889: Already exists
+db98dfa2428a: Pulling fs layer
+8f5b03a39d6e: Pulling fs layer
+212868941ea2: Pulling fs layer
+212868941ea2: Download complete
+8f5b03a39d6e: Verifying Checksum
+8f5b03a39d6e: Download complete
+db98dfa2428a: Verifying Checksum
+db98dfa2428a: Download complete
+db98dfa2428a: Pull complete
+8f5b03a39d6e: Pull complete
+212868941ea2: Pull complete
+Digest: sha256:59c26cf58705ef08a6b52eaa3664db1820c70530f461bc8e983e4b37c8cc6be0
+Status: Downloaded newer image for node:10
+ ---> a8441ebf4e4d
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Running in 5292425190e8
+Removing intermediate container 5292425190e8
+ ---> 134f48cc10d5
+Step 3/7 : COPY package*.json ./
+ ---> 891c0d4ed628
+Step 4/7 : RUN npm install
+ ---> Running in 58755bf16fa6
+npm WARN monolith@1.0.0 No description
+npm WARN monolith@1.0.0 No repository field.
+added 50 packages from 37 contributors and audited 50 packages in 1.611s
+found 0 vulnerabilities
+Removing intermediate container 58755bf16fa6
+ ---> 7bcfc80031ba
+Step 5/7 : COPY . .
+ ---> 22d48c52b874
+Step 6/7 : EXPOSE 8080
+ ---> Running in 92f3d6708ce6
+Removing intermediate container 92f3d6708ce6
+ ---> d030f8b203d4
+Step 7/7 : CMD [ "node", "src/server.js" ]
+ ---> Running in 2e2c121eef36
+Removing intermediate container 2e2c121eef36
+ ---> 43b4768627a9
+Successfully built 43b4768627a9
+Successfully tagged gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:1.0.0
+PUSH
+Pushing gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:1.0.0
+The push refers to repository [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith]
+777de9d7a796: Preparing
+1d8dbe9aae74: Preparing
+1cef77dd9512: Preparing
+1af9962ea806: Preparing
+cc01a3868aa4: Preparing
+27086a907872: Preparing
+c41cda2429b7: Preparing
+174e334f3f46: Preparing
+cbe6bbd0c86f: Preparing
+ef5de533cb53: Preparing
+a4c504f73441: Preparing
+e8847c2734e1: Preparing
+b323b70996e4: Preparing
+27086a907872: Waiting
+c41cda2429b7: Waiting
+174e334f3f46: Waiting
+cbe6bbd0c86f: Waiting
+ef5de533cb53: Waiting
+a4c504f73441: Waiting
+e8847c2734e1: Waiting
+b323b70996e4: Waiting
+cc01a3868aa4: Layer already exists
+27086a907872: Layer already exists
+c41cda2429b7: Layer already exists
+174e334f3f46: Layer already exists
+1cef77dd9512: Pushed
+1af9962ea806: Pushed
+cbe6bbd0c86f: Layer already exists
+ef5de533cb53: Layer already exists
+777de9d7a796: Pushed
+1d8dbe9aae74: Pushed
+a4c504f73441: Layer already exists
+e8847c2734e1: Layer already exists
+b323b70996e4: Layer already exists
+1.0.0: digest: sha256:b872c5aba9bb06fd40011900308439327eea54e9cf200c79ac4c8cab81bc6439 size: 3052
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                            
+          IMAGES                                              STATUS
+2f5a07c0-fa0f-402f-9bc8-2c6b82409448  2020-09-21T16:21:08+00:00  25S       gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705265.822185-7a6840d4835f41208aa4c3f1c521
+cab3.tgz  gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:1.0.0  SUCCESS
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud services enable run.googleapis.com
+Operation "operations/acf.9d122ebb-31e9-45b3-93cf-7b69251ef35c" finished successfully.
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run deploy --image=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0
+.0 --platform managed
+Service name (monolith):   
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+Allow unauthenticated invocations to [monolith] (y/N)?  y
+Deploying container to Cloud Run service [monolith] in project [qwiklabs-gcp-01-0ae66cf33a6d] region [us-central1]
+✓ Deploying new service... Done.                                                           
+  ✓ Creating Revision...
+  ✓ Routing traffic...
+  ✓ Setting IAM Policy...
+Done.
+Service [monolith] revision [monolith-00001-ver] has been deployed and is serving 100 percent of traffic at https://monolith-mvscowinwq-uc.a.run.app
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run services list
+Please choose a target platform:
+ [1] Cloud Run (fully managed)
+ [2] Cloud Run for Anthos deployed on Google Cloud
+ [3] Cloud Run for Anthos deployed on VMware
+ [4] cancel
+Please enter your numeric choice:  1
+To specify the platform yourself, pass `--platform managed`. Or, to make this the default target platform, run `gcloud config set run/platform managed`.
+   SERVICE   REGION       URL                                       LAST DEPLOYED BY                      LAST DEPLOYED AT
+✔  monolith  us-central1  https://monolith-mvscowinwq-uc.a.run.app  student-01-78255bff3513@qwiklabs.net  2020-09-21T16:25:17.666747Z
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run deploy --image=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0
+.0 --platform managed --concurrency 1
+Service name (monolith):
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+Deploying container to Cloud Run service [monolith] in project [qwiklabs-gcp-01-0ae66cf33a6d] region [us-central1]
+✓ Deploying... Done.                                         
+  ✓ Creating Revision...
+  ✓ Routing traffic...
+Done.
+Service [monolith] revision [monolith-00002-gox] has been deployed and is serving 100 percent of traffic at https://monolith-mvscowinwq-uc.a.run.app
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run deploy --image=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0
+.0 --platform managed --concurrency 80
+Service name (monolith):
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+Deploying container to Cloud Run service [monolith] in project [qwiklabs-gcp-01-0ae66cf33a6d] region [us-central1]
+✓ Deploying... Done.                                                           
+  ✓ Creating Revision...
+  ✓ Routing traffic...
+Done.
+Service [monolith] revision [monolith-00003-pax] has been deployed and is serving 100 percent of traffic at https://monolith-mvscowinwq-uc.a.run.app
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ cd ~/monolith-to-microservices/react-app/src/pages/Home
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/react-app/src/pages/Home (qwiklabs-gcp-01-0ae66cf33a6d)$ mv index.js.new index.js
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/react-app/src/pages/Home (qwiklabs-gcp-01-0ae66cf33a6d)$ cat ~/monolith-to-microservices/react-app/src/pages/H
+ome/index.js
+/*
+Copyright 2019 Google LLC
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    https://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    width: "800px",
+    margin: "0 auto",
+    padding: theme.spacing(3, 2)
+  }
+}));
+export default function Home() {
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">
+          Fancy Fashion &amp; Style Online
+        </Typography>
+        <br />
+        <Typography variant="body1">
+          Tired of mainstream fashion ideas, popular trends and societal norms?
+          This line of lifestyle products will help you catch up with the Fancy trend and express your personal style.
+          Start shopping Fancy items now!
+        </Typography>
+      </Paper>
+    </div>
+  );
+}student_01_78255bff3513@cloudshell:~/monolith-to-microservices/react-app/src/pages/Home (qwiklabs-gcp-01-0ae66cf33a6d)$ cd ~/monolith-to-microservices/react-app
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/react-app (qwiklabs-gcp-01-0ae66cf33a6d)$ npm run build:monolith
+> frontend@0.1.0 build:monolith /home/student_01_78255bff3513/monolith-to-microservices/react-app
+> env-cmd -f .env.monolith react-scripts build
+Creating an optimized production build...
+Browserslist: caniuse-lite is outdated. Please run next command `npm update`
+Compiled successfully.
+File sizes after gzip:
+  78.9 KB          build/static/js/2.7cd0ea8c.chunk.js
+  2.09 KB (+82 B)  build/static/js/main.4532893e.chunk.js
+  774 B            build/static/js/runtime~main.066cd76b.js
+The project was built assuming it is hosted at the server root.
+You can control this with the homepage field in your package.json.
+For example, add this to build it for GitHub Pages:
+  "homepage" : "http://myname.github.io/myapp",
+The build folder is ready to be deployed.
+You may serve it with a static server:
+  npm install -g serve
+  serve -s build
+Find out more about deployment here:
+  https://bit.ly/CRA-deploy
+> frontend@0.1.0 postbuild:monolith /home/student_01_78255bff3513/monolith-to-microservices/react-app
+> node scripts/post-build.js ./build ../monolith/public
+Deleting stale folder: ../monolith/public
+Deleted stale destination folder: ../monolith/public
+Copying files from ./build to ../monolith/public
+Copied ./build to ../monolith/public successfully!
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/react-app (qwiklabs-gcp-01-0ae66cf33a6d)$ cd ~/monolith-to-microservices/monolith
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ #Feel free to test your application
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ npm start
+> monolith@1.0.0 start /home/student_01_78255bff3513/monolith-to-microservices/monolith
+> node ./src/server.js
+Monolith listening on port 8080!
+^Cstudent_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:
+2.0.0 .
+Creating temporary tarball archive of 32 file(s) totalling 2.4 MiB before compression.
+Uploading tarball of [.] to [gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705947.548095-0dc22646360b41a3b71771e054c071b4.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-0ae66cf33a6d/builds/d794e0c9-7818-4176-8c92-7c8a70fe086e].
+Logs are available at [https://console.cloud.google.com/cloud-build/builds/d794e0c9-7818-4176-8c92-7c8a70fe086e?project=494414086591].
+---------------------------------------------------------------------------- REMOTE BUILD OUTPUT ----------------------------------------------------------------------------
+starting build "d794e0c9-7818-4176-8c92-7c8a70fe086e"
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705947.548095-0dc22646360b41a3b71771e054c071b4.tgz#1600705948756829
+Copying gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705947.548095-0dc22646360b41a3b71771e054c071b4.tgz#1600705948756829...
+/ [1 files][  1.4 MiB/  1.4 MiB]
+Operation completed over 1 objects/1.4 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/docker
+Sending build context to Docker daemon  2.559MB
+Step 1/7 : FROM node:10
+10: Pulling from library/node
+4f250268ed6a: Already exists
+1b49aa113642: Already exists
+c159512f4cc2: Already exists
+8439168fd8dc: Already exists
+55abbc6cc158: Already exists
+e5c5821cd889: Already exists
+db98dfa2428a: Pulling fs layer
+8f5b03a39d6e: Pulling fs layer
+212868941ea2: Pulling fs layer
+212868941ea2: Verifying Checksum
+212868941ea2: Download complete
+8f5b03a39d6e: Verifying Checksum
+8f5b03a39d6e: Download complete
+db98dfa2428a: Verifying Checksum
+db98dfa2428a: Download complete
+db98dfa2428a: Pull complete
+8f5b03a39d6e: Pull complete
+212868941ea2: Pull complete
+Digest: sha256:59c26cf58705ef08a6b52eaa3664db1820c70530f461bc8e983e4b37c8cc6be0
+Status: Downloaded newer image for node:10
+ ---> a8441ebf4e4d
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Running in e397ef0f99d5
+Removing intermediate container e397ef0f99d5
+ ---> 92b84d398051
+Step 3/7 : COPY package*.json ./
+ ---> 302159cde30b
+Step 4/7 : RUN npm install
+ ---> Running in 12760753da09
+npm WARN monolith@1.0.0 No description
+npm WARN monolith@1.0.0 No repository field.
+added 50 packages from 37 contributors and audited 50 packages in 2.087s
+found 0 vulnerabilities
+Removing intermediate container 12760753da09
+ ---> 512c49487e1f
+Step 5/7 : COPY . .
+ ---> 426e1f7c4ffd
+Step 6/7 : EXPOSE 8080
+ ---> Running in 09f62a2c671c
+Removing intermediate container 09f62a2c671c
+ ---> 2e0b673a2685
+Step 7/7 : CMD [ "node", "src/server.js" ]
+ ---> Running in 8cc7b3667610
+Removing intermediate container 8cc7b3667610
+ ---> 0a8828de4da5
+Successfully built 0a8828de4da5
+Successfully tagged gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0
+PUSH
+Pushing gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0
+The push refers to repository [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith]
+179b0d0c46a2: Preparing
+7d8564273835: Preparing
+e49ef72cdcb7: Preparing
+27654a2eadef: Preparing
+cc01a3868aa4: Preparing
+27086a907872: Preparing
+c41cda2429b7: Preparing
+174e334f3f46: Preparing
+cbe6bbd0c86f: Preparing
+ef5de533cb53: Preparing
+a4c504f73441: Preparing
+e8847c2734e1: Preparing
+b323b70996e4: Preparing
+27086a907872: Waiting
+c41cda2429b7: Waiting
+174e334f3f46: Waiting
+cbe6bbd0c86f: Waiting
+ef5de533cb53: Waiting
+a4c504f73441: Waiting
+e8847c2734e1: Waiting
+b323b70996e4: Waiting
+cc01a3868aa4: Layer already exists
+27086a907872: Layer already exists
+c41cda2429b7: Layer already exists
+174e334f3f46: Layer already exists
+cbe6bbd0c86f: Layer already exists
+ef5de533cb53: Layer already exists
+a4c504f73441: Layer already exists
+e8847c2734e1: Layer already exists
+b323b70996e4: Layer already exists
+27654a2eadef: Pushed
+e49ef72cdcb7: Pushed
+179b0d0c46a2: Pushed
+7d8564273835: Pushed
+2.0.0: digest: sha256:b39d3e2b809e103f3b66e428262979f36c13d99a271c8a81b8b6b1c49ae5793e size: 3052
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                            
+          IMAGES                                              STATUS
+d794e0c9-7818-4176-8c92-7c8a70fe086e  2020-09-21T16:32:29+00:00  25S       gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705947.548095-0dc22646360b41a3b71771e054c0
+71b4.tgz  gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0  SUCCESS
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run deploy --image=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:2.0
+.0 --platform managed
+Service name (monolith):
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+Deploying container to Cloud Run service [monolith] in project [qwiklabs-gcp-01-0ae66cf33a6d] region [us-central1]
+✓ Deploying... Done.
+✓ Creating Revision...
+  ✓ Routing traffic...
+Done.
+Service [monolith] revision [monolith-00004-luf] has been deployed and is serving 100 percent of traffic at https://monolith-mvscowinwq-uc.a.run.app
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud run services describe monolith --platform managed
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+✔ Service monolith in region us-central1
+Traffic: https://monolith-mvscowinwq-uc.a.run.app
+  100% LATEST (currently monolith-00004-luf)
+Last updated on 2020-09-21T16:35:11.313661Z by student-01-78255bff3513@qwiklabs.net:
+  Revision monolith-00004-luf
+  Image:         gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0
+  Port:          8080
+  Memory:        256Mi
+  CPU:           1000m
+  Concurrency:   80
+  Max Instances: 1000
+  Timeout:       300s
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud beta run services list
+Please choose a target platform:
+ [1] Cloud Run (fully managed)
+ [2] Cloud Run for Anthos deployed on Google Cloud
+ [3] Cloud Run for Anthos deployed on VMware
+ [4] cancel
+Please enter your numeric choice:  1 
+To specify the platform yourself, pass `--platform managed`. Or, to make this the default target platform, run `gcloud config set run/platform managed`.
+   SERVICE   REGION       URL                                       LAST DEPLOYED BY                      LAST DEPLOYED AT
+✔  monolith  us-central1  https://monolith-mvscowinwq-uc.a.run.app  student-01-78255bff3513@qwiklabs.net  2020-09-21T16:35:11.313661Z
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ # Delete the container image for version 1.0.0 of our monolith
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud container images delete gcr.io/${GOOGLE_CLOUD_PROJECT}/monolit
+h:1.0.0 --quiet
+Digests:
+- gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith@sha256:b872c5aba9bb06fd40011900308439327eea54e9cf200c79ac4c8cab81bc6439
+  Associated tags:
+ - 1.0.0
+Tags:
+- gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:1.0.0
+Deleted [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:1.0.0].
+Deleted [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith@sha256:b872c5aba9bb06fd40011900308439327eea54e9cf200c79ac4c8cab81bc6439].
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ # Delete the container image for version 2.0.0 of our monolith
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud container images delete gcr.io/${GOOGLE_CLOUD_PROJECT}/monolit
+h:2.0.0 --quiet
+Digests:
+- gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith@sha256:b39d3e2b809e103f3b66e428262979f36c13d99a271c8a81b8b6b1c49ae5793e
+  Associated tags:
+ - 2.0.0
+Tags:
+- gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0
+Deleted [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith:2.0.0].
+Deleted [gcr.io/qwiklabs-gcp-01-0ae66cf33a6d/monolith@sha256:b39d3e2b809e103f3b66e428262979f36c13d99a271c8a81b8b6b1c49ae5793e].
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ # The following command will take all source archives from all builds
+ and delete them from cloud storage
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ # Run this command to print all sources:
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ # gcloud builds list | awk 'NR > 1 {print $4}'
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud builds list | awk 'NR > 1 {print $4}' | while read line; do gs
+util rm $line; done
+Removing gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705947.548095-0dc22646360b41a3b71771e054c071b4.tgz...
+/ [1 objects]
+Operation completed over 1 objects.
+Removing gs://qwiklabs-gcp-01-0ae66cf33a6d_cloudbuild/source/1600705265.822185-7a6840d4835f41208aa4c3f1c521cab3.tgz...
+/ [1 objects]
+Operation completed over 1 objects.
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$ gcloud beta run services delete monolith --platform managed
+Please specify a region:
+ [1] asia-east1
+ [2] asia-northeast1
+ [3] asia-northeast2
+ [4] asia-southeast1
+ [5] australia-southeast1
+ [6] europe-north1
+ [7] europe-west1
+ [8] europe-west4
+ [9] northamerica-northeast1
+ [10] us-central1
+ [11] us-east1
+ [12] us-east4
+ [13] us-west1
+ [14] cancel
+Please enter your numeric choice:  10
+To make this the default region, run `gcloud config set run/region us-central1`.
+Service [monolith] will be deleted.
+Do you want to continue (Y/n)?  y
+Deleted service [monolith].
+student_01_78255bff3513@cloudshell:~/monolith-to-microservices/monolith (qwiklabs-gcp-01-0ae66cf33a6d)$
